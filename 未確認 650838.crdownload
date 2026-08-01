@@ -1,0 +1,50 @@
+// 快取的名稱，之後更新網頁內容時，改這個版本號就能讓使用者取得最新版本
+const CACHE_NAME = "old-town-walk-v1";
+
+// 需要離線也能使用的檔案清單
+const FILES_TO_CACHE = [
+  "./index.html",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
+];
+
+// ---- 安裝階段：把檔案存進快取 ----
+self.addEventListener("install", function (event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function (cache) {
+      return cache.addAll(FILES_TO_CACHE);
+    })
+  );
+});
+
+// ---- 啟用階段：清掉舊版本的快取 ----
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    caches.keys().then(function (cacheNames) {
+      return Promise.all(
+        cacheNames
+          .filter(function (name) {
+            return name !== CACHE_NAME;
+          })
+          .map(function (name) {
+            return caches.delete(name);
+          })
+      );
+    })
+  );
+});
+
+// ---- 攔截網路請求：優先用快取，沒有才連網路 ----
+self.addEventListener("fetch", function (event) {
+  event.respondWith(
+    caches.match(event.request).then(function (cachedResponse) {
+      // 如果快取裡有，直接回傳快取的版本（就算沒網路也能用）
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      // 快取沒有的話，才真的去連網路拿
+      return fetch(event.request);
+    })
+  );
+});
