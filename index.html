@@ -7,6 +7,8 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#7a4b32">
   <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     /* ---- 基本設定 ---- */
     body {
@@ -135,6 +137,15 @@
       z-index: 2;
     }
 
+    /* ---- 路線地圖 ---- */
+    #route-map {
+      width: 100%;
+      height: 260px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #d8c4a0;
+    }
+
     /* ---- 定位按鈕 ---- */
     .locate-btn {
       display: block;
@@ -196,6 +207,7 @@
   </header>
 
   <main id="landmark-list">
+    <div id="route-map"></div>
     <button id="locate-btn" class="locate-btn">📍 更新我的位置</button>
     <!-- 景點卡片會由 JavaScript 自動產生在這裡 -->
   </main>
@@ -246,6 +258,33 @@
         lng: 121.5115
       }
     ];
+
+    // ---- 初始化路線地圖 ----
+    // 用所有景點座標的平均值，決定地圖一開始要顯示哪個中心點
+    const avgLat =
+      landmarks.reduce(function (sum, l) { return sum + l.lat; }, 0) / landmarks.length;
+    const avgLng =
+      landmarks.reduce(function (sum, l) { return sum + l.lng; }, 0) / landmarks.length;
+
+    const map = L.map("route-map").setView([avgLat, avgLng], 16);
+
+    // 加入地圖底圖（OpenStreetMap，免費開源）
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    // 幫每個景點加上標記(Marker)，點下去會顯示名稱
+    landmarks.forEach(function (landmark) {
+      L.marker([landmark.lat, landmark.lng])
+        .addTo(map)
+        .bindPopup(landmark.name);
+    });
+
+    // 畫一條線，依照景點在陣列裡的順序連起來，代表建議路線
+    const routeCoords = landmarks.map(function (landmark) {
+      return [landmark.lat, landmark.lng];
+    });
+    L.polyline(routeCoords, { color: "#7a4b32", weight: 4, dashArray: "6 8" }).addTo(map);
 
     // ---- LocalStorage：讀取與寫入「已收集景點」清單 ----
     const STORAGE_KEY = "collectedStamps";
