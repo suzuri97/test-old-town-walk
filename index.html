@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>老城散策</title>
+  <title>附近散策</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#7a4b32">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -202,8 +202,8 @@
 <body>
 
   <header>
-    <h1>老城散策</h1>
-    <p>走進街巷，遇見過去</p>
+    <h1>附近散策</h1>
+    <p>走進街巷，測試能否順利遇見過去</p>
   </header>
 
   <main id="landmark-list">
@@ -232,30 +232,30 @@
     const landmarks = [
       {
         id: 1,
-        name: "媽祖廟口",
-        newImage: "https://placehold.co/400x250/e8dcc4/3b2e22?text=%E7%8F%BE%E4%BB%8A%E7%85%A7%E7%89%87",
+        name: "金樽餐廳",
+        newImage: "image-金樽",
         oldImage: "https://placehold.co/400x250/8a7048/f2e8d5?text=%E8%80%81%E7%85%A7%E7%89%87",
-        description: "這裡曾是全城最熱鬧的市集入口，百年前商販在此叫賣，至今廟前石獅仍守著同一個路口。",
-        lat: 25.0575,
-        lng: 121.5100
+        description: "公會聚餐、婚宴會館。",
+        lat: 24.75034,
+        lng: 121.77478
       },
       {
         id: 2,
-        name: "老街郵局",
-        newImage: "https://placehold.co/400x250/e8dcc4/3b2e22?text=%E7%8F%BE%E4%BB%8A%E7%85%A7%E7%89%87",
+        name: "7-11壯五門市",
+        newImage: "image-小七壯五",
         oldImage: "https://placehold.co/400x250/8a7048/f2e8d5?text=%E8%80%81%E7%85%A7%E7%89%87",
-        description: "建於日治時期的紅磚建築，曾是全區唯一的通訊樞紐，現在仍保留當年的窗櫺樣式。",
-        lat: 25.0568,
-        lng: 121.5108
+        description: "大家的方便的小七。",
+        lat: 24.74814,
+        lng: 121.78160
       },
       {
         id: 3,
-        name: "打鐵街",
-        newImage: "https://placehold.co/400x250/e8dcc4/3b2e22?text=%E7%8F%BE%E4%BB%8A%E7%85%A7%E7%89%87",
+        name: "喜互惠壯圍店",
+        newImage: "image-喜互惠",
         oldImage: "https://placehold.co/400x250/8a7048/f2e8d5?text=%E8%80%81%E7%85%A7%E7%89%87",
-        description: "早期打鐵舖聚集之處，叮叮噹噹的敲打聲曾是這條街最鮮明的記憶。",
-        lat: 25.0580,
-        lng: 121.5115
+        description: "宜蘭特有，購物袋的圖案很有趣。",
+        lat: 24.74705, 
+        lng: 121.784850
       }
     ];
 
@@ -397,7 +397,7 @@
     }
 
     // 多近才算「已抵達」（公尺）
-    const ARRIVAL_THRESHOLD = 50;
+    const ARRIVAL_THRESHOLD = 20;
 
     // ---- 「更新我的位置」按鈕 ----
     document.getElementById("locate-btn").addEventListener("click", function () {
