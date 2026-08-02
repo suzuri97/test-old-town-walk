@@ -415,6 +415,9 @@
           const userLng = position.coords.longitude;
 
           // 走訪每一張卡片，更新距離顯示、決定按鈕是否解鎖
+          // 同時把每張卡片跟它的距離存進陣列，等一下要用來排序
+          const sectionsWithDistance = [];
+
           document.querySelectorAll(".landmark").forEach(function (section) {
             const id = Number(section.dataset.id);
             const landmark = landmarks.find(function (item) {
@@ -441,6 +444,20 @@
             ) {
               stampButton.disabled = false;
             }
+
+            sectionsWithDistance.push({ section: section, distance: distance });
+          });
+
+          // ---- 依距離由近到遠排序 ----
+          sectionsWithDistance.sort(function (a, b) {
+            return a.distance - b.distance;
+          });
+
+          // appendChild 用在「已經存在於畫面上」的元素時，
+          // 效果不是新增一份，而是把它「移動」到容器的最後面
+          // 所以依排序後的順序依序呼叫，就能讓卡片重新排列
+          sectionsWithDistance.forEach(function (item) {
+            listContainer.appendChild(item.section);
           });
         },
         function (error) {
